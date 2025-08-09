@@ -4,6 +4,7 @@ using Market.Infrastucture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastucture.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250809201847_add_sales_tables")]
+    partial class add_sales_tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,7 +351,7 @@ namespace Market.Infrastucture.Migrations
                     b.Property<decimal>("TotalPrice")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("decimal(18,2)")
-                        .HasComputedColumnSql("[UnitPrice] * [Quantity] * [Discount]", true);
+                        .HasComputedColumnSql("[UnitPrice] * [Quantity]", true);
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
@@ -361,10 +364,6 @@ namespace Market.Infrastucture.Migrations
 
                     b.ToTable("SalesDetails", t =>
                         {
-                            t.HasCheckConstraint("CK_SalesDeatil_DiscountRange", "[Discount] >= 0 AND [Discount] <= 1");
-
-                            t.HasCheckConstraint("CK_SalesDetail_Quantity", "[Quantity] >= 0");
-
                             t.HasCheckConstraint("CK_SalesDetails_Quantity", "[Quantity] >= 0");
                         });
                 });

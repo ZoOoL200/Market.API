@@ -25,4 +25,5 @@ public class Product
     public Category Category { get; set; } = default!;
     public ICollection<PurchaseDetail> PurchaseDetails { get; set; } = [];
     public ICollection<ProductStock> ProductStocks { get; set; } = [];
+    public ICollection<SalesDetail> SalesDetails { get; set; } = [];
 }

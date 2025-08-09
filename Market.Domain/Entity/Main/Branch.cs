@@ -20,4 +20,5 @@ public class Branch
     // Navigation properties
     public ICollection<Inventory> Inventories { get; set; } = [];
     public ICollection<PurchaseInvoice> PurchaseInvoices { get; set; } =[];
+    public ICollection<SalesInvoice> SalesInvoices { get; set; } = [];
 }

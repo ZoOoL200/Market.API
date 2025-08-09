@@ -23,5 +23,5 @@ public class ProductStock
     // Navigation properties
     public Inventory Inventory { get; set; } = default!;
     
-    public Product Product { get; set; }= default!;
+    public Product Product { get; set; } = default!;
 }

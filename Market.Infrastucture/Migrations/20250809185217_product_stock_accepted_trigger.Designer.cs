@@ -4,6 +4,7 @@ using Market.Infrastucture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastucture.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250809185217_product_stock_accepted_trigger")]
+    partial class product_stock_accepted_trigger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,95 +324,6 @@ namespace Market.Infrastucture.Migrations
                     b.ToTable("PurchaserInvoices");
                 });
 
-            modelBuilder.Entity("Market.Domain.Entity.Operations.SalesDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<float>("Discount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("real")
-                        .HasDefaultValue(0f);
-
-                    b.Property<long>("InvoiceID")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<decimal>("TotalPrice")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("decimal(18,2)")
-                        .HasComputedColumnSql("[UnitPrice] * [Quantity] * [Discount]", true);
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("SalesDetails", t =>
-                        {
-                            t.HasCheckConstraint("CK_SalesDeatil_DiscountRange", "[Discount] >= 0 AND [Discount] <= 1");
-
-                            t.HasCheckConstraint("CK_SalesDetail_Quantity", "[Quantity] >= 0");
-
-                            t.HasCheckConstraint("CK_SalesDetails_Quantity", "[Quantity] >= 0");
-                        });
-                });
-
-            modelBuilder.Entity("Market.Domain.Entity.Operations.SalesInvoice", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<Guid>("BranchID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CustomerNmae")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("EmployeeID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("InvoiceDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("InvoiceNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchID");
-
-                    b.HasIndex("InvoiceNumber")
-                        .IsUnique();
-
-                    b.ToTable("SalesInvoices");
-                });
-
             modelBuilder.Entity("Market.Domain.Entity.HR.Contact", b =>
                 {
                     b.HasOne("Market.Domain.Entity.HR.CountryKey", "Country")
@@ -514,36 +428,6 @@ namespace Market.Infrastucture.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("Market.Domain.Entity.Operations.SalesDetail", b =>
-                {
-                    b.HasOne("Market.Domain.Entity.Operations.SalesInvoice", "SalesInvoice")
-                        .WithMany("SalesDetails")
-                        .HasForeignKey("InvoiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Market.Domain.Entity.Main.Product", "Product")
-                        .WithMany("SalesDetails")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("SalesInvoice");
-                });
-
-            modelBuilder.Entity("Market.Domain.Entity.Operations.SalesInvoice", b =>
-                {
-                    b.HasOne("Market.Domain.Entity.Main.Branch", "Branch")
-                        .WithMany("SalesInvoices")
-                        .HasForeignKey("BranchID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("Market.Domain.Entity.HR.CountryKey", b =>
                 {
                     b.Navigation("Contacts");
@@ -554,8 +438,6 @@ namespace Market.Infrastucture.Migrations
                     b.Navigation("Inventories");
 
                     b.Navigation("PurchaseInvoices");
-
-                    b.Navigation("SalesInvoices");
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Main.Category", b =>
@@ -575,8 +457,6 @@ namespace Market.Infrastucture.Migrations
                     b.Navigation("ProductStocks");
 
                     b.Navigation("PurchaseDetails");
-
-                    b.Navigation("SalesDetails");
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Management.Supplier", b =>
@@ -589,11 +469,6 @@ namespace Market.Infrastucture.Migrations
             modelBuilder.Entity("Market.Domain.Entity.Operations.PurchaseInvoice", b =>
                 {
                     b.Navigation("PurchaseDetails");
-                });
-
-            modelBuilder.Entity("Market.Domain.Entity.Operations.SalesInvoice", b =>
-                {
-                    b.Navigation("SalesDetails");
                 });
 #pragma warning restore 612, 618
         }

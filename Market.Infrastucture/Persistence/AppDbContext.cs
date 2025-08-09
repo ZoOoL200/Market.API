@@ -20,6 +20,8 @@ internal class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(
     internal DbSet<PurchaseInvoice> PurchaserInvoices { get; set; }
     internal DbSet<PurchaseDetail> PurchaseDetails { get; set; }
     internal DbSet<ProductStock> ProductStocks { get; set; }
+    internal DbSet<SalesInvoice> SalesInvoices { get; set; }
+    internal DbSet<SalesDetail> SalesDetails { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -48,6 +50,19 @@ internal class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(
         //ProductStock Table Configuration
         modelBuilder.Entity<ProductStock>().Property(x=>x.UnitDefaultPrice).HasComputedColumnSql("[DefaultCostPrice] * 1.15 ", stored: true);
         modelBuilder.Entity<ProductStock>().ToTable(x=> x.HasCheckConstraint("CK_ProductStock_QuantityAvailable", "[QuantityAvailable] >= 0"));
+
+        // SalesInvoice Table Configuration
+        modelBuilder.Entity<SalesInvoice>().Property(x => x.InvoiceDate).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd()
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+        // SalesDetails Table Configuration
+        modelBuilder.Entity<SalesDetail>().ToTable(x => x.HasCheckConstraint("CK_SalesDetails_Quantity", "[Quantity] >= 0"));
+        modelBuilder.Entity<SalesDetail>().Property(x => x.Quantity).HasDefaultValue(1);
+        modelBuilder.Entity<SalesDetail>().ToTable(x => x.HasCheckConstraint("CK_SalesDetail_Quantity", "[Quantity] >= 0"));
+        modelBuilder.Entity<SalesDetail>().Property(x => x.Discount).HasDefaultValue(0.0f);
+        modelBuilder.Entity<SalesDetail>().ToTable(x => x.HasCheckConstraint("CK_SalesDeatil_DiscountRange", "[Discount] >= 0 AND [Discount] <= 1"));
+        modelBuilder.Entity<SalesDetail>().Property(x => x.TotalPrice).HasComputedColumnSql("[UnitPrice] * [Quantity] * [Discount]", stored: true);
+
 
     }
 
