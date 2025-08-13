@@ -23,4 +23,6 @@ public class SalesInvoice
     // Navigation properties
     public Branch Branch { get; set; } = default!;
     public ICollection<SalesDetail> SalesDetails { get; set; } = [];
+
+    //Tdo: navigation with Employee
 }

@@ -46,7 +46,7 @@ namespace Market.Infrastucture.Migrations
 
                     b.HasIndex("PersonID");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.HR.CountryKey", b =>
@@ -72,7 +72,7 @@ namespace Market.Infrastucture.Migrations
                     b.HasIndex("Key", "CountryName")
                         .IsUnique();
 
-                    b.ToTable("CountryKeys");
+                    b.ToTable("CountryKeys", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Main.Branch", b =>
@@ -96,7 +96,7 @@ namespace Market.Infrastucture.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Main.Category", b =>
@@ -120,7 +120,7 @@ namespace Market.Infrastucture.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Main.Inventory", b =>
@@ -145,7 +145,7 @@ namespace Market.Infrastucture.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Inventories");
+                    b.ToTable("Inventories", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Main.Product", b =>
@@ -173,7 +173,7 @@ namespace Market.Infrastucture.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Main.ProductStock", b =>
@@ -207,7 +207,7 @@ namespace Market.Infrastucture.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ProductStocks", t =>
+                    b.ToTable("ProductStocks", null, t =>
                         {
                             t.HasCheckConstraint("CK_ProductStock_QuantityAvailable", "[QuantityAvailable] >= 0");
                         });
@@ -230,7 +230,7 @@ namespace Market.Infrastucture.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Operations.PurchaseDetail", b =>
@@ -284,7 +284,7 @@ namespace Market.Infrastucture.Migrations
 
                     b.HasIndex("PurchaseInvoiceId");
 
-                    b.ToTable("PurchaseDetails", t =>
+                    b.ToTable("PurchaseDetails", null, t =>
                         {
                             t.HasCheckConstraint("CK_PurchaseDetail_Quantity", "[Quantity] >= 0");
                         });
@@ -318,7 +318,7 @@ namespace Market.Infrastucture.Migrations
 
                     b.HasIndex("SupplierID");
 
-                    b.ToTable("PurchaserInvoices");
+                    b.ToTable("PurchaserInvoices", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.Operations.SalesDetail", b =>
@@ -359,7 +359,7 @@ namespace Market.Infrastucture.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("SalesDetails", t =>
+                    b.ToTable("SalesDetails", null, t =>
                         {
                             t.HasCheckConstraint("CK_SalesDeatil_DiscountRange", "[Discount] >= 0 AND [Discount] <= 1");
 
@@ -407,7 +407,7 @@ namespace Market.Infrastucture.Migrations
                     b.HasIndex("InvoiceNumber")
                         .IsUnique();
 
-                    b.ToTable("SalesInvoices");
+                    b.ToTable("SalesInvoices", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Entity.HR.Contact", b =>

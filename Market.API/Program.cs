@@ -10,9 +10,10 @@ builder.Services.AddMarketInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 // seed the database with initial data
-var seeder = app.Services.CreateScope().ServiceProvider;
+var scop = app.Services.CreateScope();
+var service = scop.ServiceProvider;
 ;
-await seeder.GetRequiredService<ICountryKeySeeder>().SeedAsync();
+await service.GetRequiredService<ICountryKeySeeder>().SeedAsync();
 
 // Configure the HTTP request pipeline.
 
